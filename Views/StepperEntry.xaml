@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Zenworks.UI.StepperEntry">
+    <ContentView.Content>
+        <StackLayout Orientation="Horizontal">
+            <Entry Text="{Binding Value, StringFormat='{0:F0}', Mode=OneWay}"
+                Keyboard="Numeric"
+                HorizontalOptions="StartAndExpand"
+                   x:Name="Entry"/>
+            <Stepper x:Name="stepper"
+                Value="{Binding Value, Mode=TwoWay}"
+                Increment="{Binding Increment}" />
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

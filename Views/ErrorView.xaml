@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ui:BaseView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ui="clr-namespace:Zenworks.UI"
+             x:Class="Zenworks.UI.ErrorView"
+             x:TypeArguments="ui:ErrorViewModel"
+             x:Name="view"
+             IsVisible="False">
+  <ContentView.Content>
+        <Frame HasShadow="True"
+               BackgroundColor="{x:StaticResource DarkRed}"
+               Padding="5">
+              <StackLayout Orientation="Horizontal"
+                           x:DataType="ui:ErrorViewModel"
+                           BindingContext="{Binding ViewModel, Source={x:Reference view}}">
+                    <Label Text="{Binding Message}"
+                           TextColor="White"
+                           FontAttributes="Bold"
+                           VerticalOptions="Center"
+                           HorizontalOptions="StartAndExpand"/>
+                    <Button
+                        Text="{Binding FirstButtonText}"
+                        Command="{Binding OnFirstButtonClicked}"
+                        VerticalOptions="Center"
+                        HorizontalOptions="End"/>
+                    <Button
+                        IsVisible="{Binding IsSecondButtonVisible}"
+                        Text="{Binding SecondButtonText}"
+                        Command="{Binding OnSecondButtonClicked}"
+                        VerticalOptions="Center"
+                        HorizontalOptions="End"/>
+            </StackLayout>
+        </Frame>
+    </ContentView.Content>
+</ui:BaseView>
