@@ -19,7 +19,7 @@ namespace Zenworks.UI {
         //The interface only includes this evennt
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public Page? CurrentPage { get; set; }
+        public BasePage? CurrentPage { get; set; }
 
         public event VMEventHandler<ViewModel> TaskFinished;
 
