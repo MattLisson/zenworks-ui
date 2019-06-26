@@ -23,6 +23,8 @@ namespace Zenworks.UI {
             }
         }
 
+        public bool WarnOnBackButtonWithUnsavedChanges { get; set; } = false;
+
 #pragma warning disable CS8618 // Non-nullable field is uninitialized.
         // TODO: Fix the null viewmodel for Design-Time view.
         public BasePage() { }
@@ -35,6 +37,22 @@ namespace Zenworks.UI {
         protected override void OnAppearing() {
             base.OnAppearing();
             viewModel.OnAppearing();
+        }
+        protected override bool OnBackButtonPressed() {
+            if (!WarnOnBackButtonWithUnsavedChanges || !ViewModel.HasChanged) {
+                return base.OnBackButtonPressed();
+            }
+            // Begin an asyncronous task on the UI thread because we intend to ask the users permission.
+            Device.BeginInvokeOnMainThread(async () => {
+                if (await DisplayAlert("Exit page?", "You have unsaved changes, are you sure you want to exit?", "Discard Changes", "Stay here")) {
+                    base.OnBackButtonPressed();
+                    ViewModel.FinishTask();
+                }
+            });
+
+            // Always return true because this method is not asynchronous.
+            // We must handle the action ourselves: see above.
+            return true;
         }
     }
 }

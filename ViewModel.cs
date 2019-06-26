@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Xamarin.Forms;
@@ -21,6 +23,18 @@ namespace Zenworks.UI {
 
         public event VMEventHandler<ViewModel> TaskFinished;
 
+        private bool hasChanged = false;
+        public bool HasChanged {
+            get => hasChanged;
+            set {
+                hasChanged = value;
+                if (value) {
+                    AnythingChanged?.Invoke(this);
+                }
+            }
+        }
+        public event VMEventHandler<ViewModel> AnythingChanged;
+
         protected static string[] Deps(params string[] args) {
             return args;
         }
@@ -31,7 +45,9 @@ namespace Zenworks.UI {
 
             //If we have a different value, do stuff
             if (!EqualityComparer<T>.Default.Equals(field, value)) {
+                StopObservingChild(field);
                 field = value;
+                ObserveChild(field);
 
                 // Compiler sets name from the annotation.
                 OnPropertyChanged(name!);
@@ -46,8 +62,43 @@ namespace Zenworks.UI {
             return propertyChanged;
         }
 
-        //The C#6 version of the common implementation
+        #region Child Observation
+        private void ChildViewModelChanged(ViewModel vm) {
+            HasChanged = true;
+        }
+
+        private void ChildPropertyChanged(object sender, PropertyChangedEventArgs args) {
+            HasChanged = true;
+        }
+
+        private void ChildCollectionChanged(object sender, NotifyCollectionChangedEventArgs args) {
+            HasChanged = true;
+        }
+
+        protected void StopObservingChild(object? child) {
+            if (child is ViewModel vm) {
+                vm.AnythingChanged -= ChildViewModelChanged;
+            } else if (child is INotifyPropertyChanged changable) {
+                changable.PropertyChanged -= ChildPropertyChanged;
+            } else if (child is INotifyCollectionChanged collection) {
+                collection.CollectionChanged -= ChildCollectionChanged;
+            }
+        }
+
+        protected void ObserveChild(object? child) {
+            // If we can listen to this property, listen for changes for our HasChanged.
+            if (child is ViewModel newVm) {
+                newVm.AnythingChanged += ChildViewModelChanged;
+            } else if (child is INotifyPropertyChanged newChangable) {
+                newChangable.PropertyChanged += ChildPropertyChanged;
+            } else if (child is INotifyCollectionChanged newCollection) {
+                newCollection.CollectionChanged += ChildCollectionChanged;
+            }
+        }
+        #endregion
+
         protected void OnPropertyChanged([CallerMemberName]string? name = null) {
+            HasChanged = true;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name!));
         }
 
