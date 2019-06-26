@@ -6,12 +6,20 @@ using Xamarin.Forms;
 
 namespace Zenworks.UI {
     public class ViewModel : INotifyPropertyChanged {
+
+        public delegate void VMEventHandler<TVm, T1, T2>(TVm viewModel, T1 value, T2 value2)
+            where TVm : ViewModel;
+        public delegate void VMEventHandler<TVm, T1>(TVm viewModel, T1 value)
+            where TVm : ViewModel;
+        public delegate void VMEventHandler<TVm>(TVm viewModel)
+            where TVm : ViewModel;
+
         //The interface only includes this evennt
         public event PropertyChangedEventHandler PropertyChanged;
 
         public Page? CurrentPage { get; set; }
 
-        public event Action<ViewModel> TaskFinished;
+        public event VMEventHandler<ViewModel> TaskFinished;
 
         protected static string[] Deps(params string[] args) {
             return args;
