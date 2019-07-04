@@ -17,11 +17,9 @@
 
   <ItemGroup>
     <Compile Update="Views\ErrorView.xaml.cs">
-      <SubType>Code</SubType>
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Views\StepperEntry.xaml.cs">
-      <SubType>Code</SubType>
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
   </ItemGroup>
