@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Utils\Zenworks.Utils.csproj" />
+    <ProjectReference Include="..\Zenworks.Utils\Zenworks.Utils.csproj" />
   </ItemGroup>
 
   <ItemGroup>
