@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="NodaTime" Version="2.4.7" />
-    <PackageReference Include="Xamarin.Forms" Version="4.0.0.497661" />
+    <PackageReference Include="Xamarin.Forms" Version="4.2.0.848062" />
   </ItemGroup>
 
   <ItemGroup>
