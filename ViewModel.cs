@@ -107,5 +107,6 @@ namespace Zenworks.UI {
         }
 
         public virtual void OnAppearing() { }
+        public virtual void OnDisappearing() { }
     }
 }

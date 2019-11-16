@@ -13,7 +13,12 @@ namespace Zenworks.UI {
 
         private TViewModel? viewModel;
         public TViewModel? ViewModel {
-            get => viewModel;
+            get {
+                if (viewModel == null && maybeLazyViewModel != null) {
+                    viewModel = maybeLazyViewModel.Value;
+                }
+                return viewModel;
+            }
             set {
                 if (viewModel != null) {
                     viewModel.CurrentPage = null;
@@ -45,11 +50,14 @@ namespace Zenworks.UI {
 
         protected override void OnAppearing() {
             base.OnAppearing();
-            if (maybeLazyViewModel != null && ViewModel == null) {
-                ViewModel = maybeLazyViewModel.Value;
-            }
             ViewModel?.OnAppearing();
         }
+
+        protected override void OnDisappearing() {
+            base.OnDisappearing();
+            ViewModel?.OnDisappearing();
+        }
+
         protected override bool OnBackButtonPressed() {
             if (ViewModel == null || !WarnOnBackButtonWithUnsavedChanges || !ViewModel.HasChanged) {
                 return base.OnBackButtonPressed();
