@@ -15,7 +15,7 @@ namespace Zenworks.UI {
         public TViewModel? ViewModel {
             get {
                 if (viewModel == null && maybeLazyViewModel != null) {
-                    viewModel = maybeLazyViewModel.Value;
+                    ViewModel = maybeLazyViewModel.Value;
                 }
                 return viewModel;
             }
