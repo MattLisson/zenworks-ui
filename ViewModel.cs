@@ -17,11 +17,11 @@ namespace Zenworks.UI {
             where TVm : ViewModel;
 
         //The interface only includes this evennt
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public BasePage? CurrentPage { get; set; }
 
-        public event VMEventHandler<ViewModel> TaskFinished;
+        public event VMEventHandler<ViewModel>? TaskFinished;
 
         private bool hasChanged = false;
         public bool HasChanged {
@@ -33,7 +33,7 @@ namespace Zenworks.UI {
                 }
             }
         }
-        public event VMEventHandler<ViewModel> AnythingChanged;
+        public event VMEventHandler<ViewModel>? AnythingChanged;
 
         protected static string[] Deps(params string[] args) {
             return args;

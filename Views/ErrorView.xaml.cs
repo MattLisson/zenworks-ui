@@ -34,8 +34,8 @@ namespace Zenworks.UI {
         public Command OnFirstButtonClicked { get; }
         public Command OnSecondButtonClicked { get; }
 
-        public event Action FirstAction;
-        public event Action SecondAction;
+        public event Action? FirstAction;
+        public event Action? SecondAction;
 
 
         public ErrorViewModel(string message, bool dismissOnClicks = true,
