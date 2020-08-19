@@ -6,8 +6,8 @@
         <StackLayout Orientation="Horizontal">
             <Entry Text="{Binding Value, StringFormat='{0:F0}', Mode=OneWay}"
                 Keyboard="Numeric"
-                HorizontalOptions="StartAndExpand"
-                   x:Name="Entry"/>
+                WidthRequest="60"
+                x:Name="Entry"/>
             <Stepper x:Name="stepper"
                 Value="{Binding Value, Mode=TwoWay}"
                 Increment="{Binding Increment}" />
