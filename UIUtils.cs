@@ -11,9 +11,16 @@ namespace Zenworks.UI {
             return hms.Format(duration);
         }
 
-        private static readonly InstantPattern shortPattern = InstantPattern.CreateWithCurrentCulture("g");
+        private static readonly ZonedDateTimePattern shortPattern = ZonedDateTimePattern.CreateWithCurrentCulture("MMM dd h:mm tt", DateTimeZoneProviders.Tzdb);
         public static string Format(this Instant instant) {
-            return shortPattern.Format(instant);
+            return shortPattern.Format(instant.InZone(currentTimezone));
+        }
+
+        private static readonly DateTimeZone currentTimezone = DateTimeZoneProviders.Tzdb.GetSystemDefault();
+
+        private static readonly ZonedDateTimePattern hm = ZonedDateTimePattern.CreateWithCurrentCulture("h:mm tt", DateTimeZoneProviders.Tzdb);
+        public static string FormatShort(this Instant instant) {
+            return hm.Format(instant.InZone(currentTimezone));
         }
     }
 }
