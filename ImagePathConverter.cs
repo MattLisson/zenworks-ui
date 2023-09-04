@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
-using Xamarin.Forms;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Devices;
 
 namespace Zenworks.UI {
     public class ImagePathConverter : IValueConverter {
@@ -11,19 +12,15 @@ namespace Zenworks.UI {
             }
 
             string imagePath;
-            switch (Device.RuntimePlatform) {
-                case Device.Android:
-                    imagePath = Name;
-                    break;
-                case Device.iOS:
-                    imagePath = Name + ".png";
-                    break;
-                case Device.UWP:
-                    imagePath = "Icons/" + Name + ".png";
-                    break;
-                default:
-                    throw new PlatformNotSupportedException("Unsupported platform for loading images");
-            }
+            if (DeviceInfo.Current.Platform == DevicePlatform.Android)
+                imagePath = Name;
+            else if (DeviceInfo.Current.Platform == DevicePlatform.iOS)
+                imagePath = Name + ".png";
+            else if (DeviceInfo.Current.Platform == DevicePlatform.WinUI)
+                imagePath = "Icons/" + Name + ".png";
+            else
+                throw new PlatformNotSupportedException("Unsupported platform for loading images");
+
             return FileImageSource.FromFile(imagePath);
         }
 

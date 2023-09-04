@@ -1,6 +1,7 @@
 ﻿using System;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Controls.Xaml;
+using Microsoft.Maui.Devices;
 
 namespace Zenworks.UI {
     [ContentProperty("SourceImage")]
@@ -13,20 +14,16 @@ namespace Zenworks.UI {
                 return null;
             }
 
-            string imagePath;
-            switch (Device.RuntimePlatform) {
-                case Device.Android:
-                    imagePath = Name;
-                    break;
-                case Device.iOS:
-                    imagePath = Name + ".png";
-                    break;
-                case Device.UWP:
-                    imagePath = "Icons/" + Name + ".png";
-                    break;
-                default:
-                    throw new PlatformNotSupportedException("Unsupported platform for loading images");
-            }
+            string imagePath = string.Empty;
+            if (DeviceInfo.Current.Platform == DevicePlatform.Android)
+                imagePath = Name;
+            else if (DeviceInfo.Current.Platform == DevicePlatform.iOS)
+                imagePath = Name + ".png";
+            else if (DeviceInfo.Current.Platform == DevicePlatform.WinUI)
+                imagePath = "Icons/" + Name + ".png";
+            else
+                throw new PlatformNotSupportedException("Unsupported platform for loading images");
+
             return imagePath;
         }
 

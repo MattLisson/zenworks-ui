@@ -1,9 +1,10 @@
-﻿using System.Windows.Input;
-using Xamarin.Forms;
+﻿using System.Runtime.Versioning;
+using System.Windows.Input;
+using Microsoft.Maui.Controls;
 
-namespace Zenworks.UI
-{
-	public class TappableViewCell : ViewCell {
+namespace Zenworks.UI {
+    [SupportedOSPlatform("ios")]
+    public class TappableViewCell : ViewCell {
         public static readonly BindableProperty CommandProperty = BindableProperty.Create(
             nameof(Command),
             typeof(ICommand),

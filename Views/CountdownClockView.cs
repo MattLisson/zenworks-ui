@@ -1,11 +1,15 @@
 ﻿using System;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Graphics;
 using NodaTime;
-using SkiaSharp.Views.Forms;
+using SkiaSharp.Views.Maui;
 using SkiaSharp;
-using Xamarin.Forms;
+using SkiaSharp.Views.Maui.Controls;
+using System.Runtime.Versioning;
 
 namespace Zenworks.UI {
 
+    [SupportedOSPlatform("ios")]
     public class CountdownClockView : SKCanvasView {
 
         public static readonly BindableProperty TimeRemainingProperty = BindableProperty.Create(
@@ -46,16 +50,16 @@ namespace Zenworks.UI {
 
         public static readonly BindableProperty ForegroundColorProperty = BindableProperty.Create(
             nameof(ForegroundColor),
-            typeof(SKColor),
+            typeof(Color),
             typeof(CountdownClockView),
-            new SKColor(0xA3, 0xA1, 0xFB),
+            new Color(0xA3, 0xA1, 0xFB),
             defaultBindingMode: BindingMode.OneWay,
             null,
             OnPropertyChanged);
 
         public Duration TimeRemaining {
             get => (Duration)GetValue(TimeRemainingProperty);
-            set => SetValue(TimeRemainingProperty, value);
+            set => SetValue(TimeRemainingProperty, Duration.Max(value, Duration.Zero));
         }
 
         public Duration TotalTime {
@@ -72,8 +76,8 @@ namespace Zenworks.UI {
             set => SetValue(BackgroundAlphaProperty, value);
         }
 
-        public SKColor ForegroundColor {
-            get => (SKColor)GetValue(ForegroundColorProperty);
+        public Color ForegroundColor {
+            get => (Color)GetValue(ForegroundColorProperty);
             set => SetValue(ForegroundColorProperty, value);
         }
 
@@ -95,12 +99,12 @@ namespace Zenworks.UI {
 
             SKPaint backgroundPaint = new SKPaint {
                 Style = SKPaintStyle.Stroke,
-                Color = ForegroundColor.WithAlpha((byte)(BackgroundAlpha * 255)),
+                Color = ForegroundColor.ToSKColor().WithAlpha((byte)(BackgroundAlpha * 255)),
                 StrokeWidth = Thickness,
             };
             SKPaint foregroundPaint = new SKPaint {
                 Style = SKPaintStyle.Stroke,
-                Color = ForegroundColor,
+                Color = ForegroundColor.ToSKColor(),
                 StrokeWidth = Thickness,
                 IsAntialias = true,
             };
@@ -111,6 +115,16 @@ namespace Zenworks.UI {
             SKRect circleArea = new SKRect(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
             partialCircle.AddArc(circleArea, -90.0f, arcAngle);
             canvas.DrawPath(partialCircle, foregroundPaint);
+
+            SKPaint textPaint = new SKPaint {
+                Color = SKColors.Black.WithAlpha(170),
+                TextSize = 38.0f,
+                IsStroke = false,
+                IsAntialias = true,
+                TextAlign = SKTextAlign.Center,
+            };
+
+            canvas.DrawText($"{TimeRemaining.FormatS()}s", centerX, centerY + 19.0f, textPaint);
         }
 
         private static void OnPropertyChanged(BindableObject bindable, object oldValue, object newValue) {

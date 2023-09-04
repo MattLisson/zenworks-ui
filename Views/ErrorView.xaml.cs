@@ -1,6 +1,6 @@
 ﻿using System;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Controls.Xaml;
 
 namespace Zenworks.UI {
 
@@ -85,7 +85,7 @@ namespace Zenworks.UI {
             }
         }
 
-        private void ViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+        private void ViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e) {
             if (e.PropertyName == nameof(ErrorViewModel.IsVisible)) {
                 IsVisible = ViewModel.IsVisible;
             }

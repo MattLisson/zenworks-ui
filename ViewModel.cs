@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Xamarin.Forms;
 
 namespace Zenworks.UI {
     public class ViewModel : INotifyPropertyChanged {
@@ -67,11 +66,11 @@ namespace Zenworks.UI {
             HasChanged = true;
         }
 
-        private void ChildPropertyChanged(object sender, PropertyChangedEventArgs args) {
+        private void ChildPropertyChanged(object? sender, PropertyChangedEventArgs args) {
             HasChanged = true;
         }
 
-        private void ChildCollectionChanged(object sender, NotifyCollectionChangedEventArgs args) {
+        private void ChildCollectionChanged(object? sender, NotifyCollectionChangedEventArgs args) {
             HasChanged = true;
         }
 

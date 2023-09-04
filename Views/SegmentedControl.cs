@@ -1,9 +1,13 @@
 ﻿using System.Collections.Generic;
-using Xamarin.Forms;
+using System.Linq;
+using System.Runtime.Versioning;
+using Microsoft.Maui;
+using Microsoft.Maui.Controls;
 using Zenworks.Utils;
 
 namespace Zenworks.UI {
     [ContentProperty(nameof(OptionTexts))]
+    [SupportedOSPlatform("ios")]
     public class SegmentedControl : ContentView {
 
         public static readonly BindableProperty SelectedIndexProperty = BindableProperty.Create(
@@ -67,10 +71,14 @@ namespace Zenworks.UI {
 
         private static void OnSelectedIndexChanging(BindableObject bindable, object oldValue, object newValue) {
             if (bindable is SegmentedControl control) {
-                View oldView = control.stack.Children[(int)oldValue];
-                View newView = control.stack.Children[(int)newValue];
-                oldView.StyleClass = oldView.StyleClass.Filter(@class => @class != SelectedButtonStyleClass).ToList();
-                newView.StyleClass = newView.StyleClass.Append(SelectedButtonStyleClass).ToList();
+                View? oldView = control.stack.Children[(int)oldValue] as View;
+                View? newView = control.stack.Children[(int)newValue] as View;
+
+                if (oldView != null)
+                    oldView.StyleClass = oldView.StyleClass.Filter(@class => @class != SelectedButtonStyleClass).ToList();
+                
+                if (newView != null)
+                    newView.StyleClass = newView.StyleClass.Append(SelectedButtonStyleClass).ToList();
             }
         }
     }

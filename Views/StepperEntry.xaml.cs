@@ -1,8 +1,11 @@
-﻿using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+﻿
+
+using System.Runtime.Versioning;
+using Microsoft.Maui.Controls;
 
 namespace Zenworks.UI {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
+
+    [SupportedOSPlatform("ios")]
     public partial class StepperEntry : ContentView {
 
         public static readonly BindableProperty ValueProperty = BindableProperty.Create(
@@ -34,9 +37,20 @@ namespace Zenworks.UI {
             InitializeComponent();
             Content.BindingContext = this;
             Entry.TextChanged += Entry_TextChanged;
+            IncrementButton.Clicked += IncrementButton_Clicked;
+            DecrementButton.Clicked += DecrementButton_Clicked;
+            
         }
 
-        private void Entry_TextChanged(object sender, TextChangedEventArgs e) {
+        private void DecrementButton_Clicked(object? sender, System.EventArgs e) {
+            Value -= Increment;
+        }
+
+        private void IncrementButton_Clicked(object? sender, System.EventArgs e) {
+            Value += Increment;
+        }
+
+        private void Entry_TextChanged(object? sender, TextChangedEventArgs e) {
             if (double.TryParse(e.NewTextValue, out double newValue)) {
                 Value = newValue;
             }

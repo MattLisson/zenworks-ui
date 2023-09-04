@@ -1,5 +1,6 @@
 ﻿using System;
-using Xamarin.Forms;
+using Microsoft.Maui.ApplicationModel;
+using Microsoft.Maui.Controls;
 
 namespace Zenworks.UI {
     public class BasePage : ContentPage {
@@ -63,7 +64,7 @@ namespace Zenworks.UI {
                 return base.OnBackButtonPressed();
             }
             // Begin an asyncronous task on the UI thread because we intend to ask the users permission.
-            Device.BeginInvokeOnMainThread(async () => {
+            MainThread.BeginInvokeOnMainThread(async () => {
                 if (await DisplayAlert("Exit page?", "You have unsaved changes, are you sure you want to exit?", "Discard Changes", "Stay here")) {
                     base.OnBackButtonPressed();
                     ViewModel?.FinishTask();

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Globalization;
-using Xamarin.Forms;
+using Microsoft.Maui.Controls;
 
 namespace Zenworks.UI {
     // This doesnt work for some reason (Not called even when referenced as a static resource).
